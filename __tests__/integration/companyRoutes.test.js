@@ -44,6 +44,7 @@ VALUES ('APL', 'Apple', 100, 'Great', 'Apple.com'), ('FB', 'Facebook', 10, 'Suck
   describe("GET /companies/:handle", function () {
     test("Get a single companies", async function () {
       const response = await request(app).get("/companies/APL");
+      console.log("HERE", response.body)
       expect(response.body.company.name).toBe("Apple");
       expect(response.body.company).toHaveProperty("num_employees");
     })

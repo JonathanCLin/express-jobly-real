@@ -58,6 +58,7 @@ class Company {
             ON c.handle = j.company_handle
             WHERE c.handle=$1`,
             [handle]);
+        console.log("model company", company)   
         let jobArray = []
         for (let row of company.rows) {
             let singleJob = {
