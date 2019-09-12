@@ -8,6 +8,16 @@ const db = require("../db");
 const ExpressError = require("../helpers/expressError");
 
 
+router.get("/", async function (req, res, next) {
+  try {
+    const { search, min_salary, min_equity } = req.query;
+    const jobs = await Job.all(min_salary, min_equity, search);
+    return res.json({ jobs });
+  }
+  catch (err) {
+    return next(err);
+  }
+})
 
 router.post("/", async function (req, res, next) {
   try {
@@ -28,20 +38,10 @@ router.post("/", async function (req, res, next) {
   }
 })
 
-router.get("/", async function (req, res, next) {
-  try {
-    const { search, min_salary, min_equity } = req.query;
-    const jobs = await Job.all(min_salary, min_equity, search);
-    return res.json({ jobs });
-  }
-  catch (err) {
-    return next(err);
-  }
-})
 
 router.get("/:id", async function (req, res, next) {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const job = await Job.get(id);
     return res.json({ job });
   }

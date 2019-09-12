@@ -10,14 +10,25 @@ describe("Testing Company Routes", function () {
     await db.query("DELETE FROM companies");
 
     let example = await db.query(`
-  INSERT INTO companies (
-    handle,
-    name,
-    num_employees,
-    description,
-    logo_url)
-VALUES ('APL', 'Apple', 100, 'Great', 'Apple.com'), ('FB', 'Facebook', 10, 'Sucks', 'Facebook.com')
-  `)
+      INSERT INTO companies (
+        handle,
+        name,
+        num_employees,
+        description,
+        logo_url)
+        VALUES ('APL', 'Apple', 100, 'Great', 'Apple.com'), ('FB', 'Facebook', 10, 'Sucks', 'Facebook.com')
+        `)
+
+    await db.query(`
+      INSERT INTO jobs (
+      id,
+      title, 
+      salary, 
+      equity, 
+      company_handle,
+      date_posted)
+      VALUES (1, 'CEO', 100000, 0.40, 'APL', current_timestamp)
+      `)
   })
 
   describe("GET /companies", function () {

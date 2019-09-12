@@ -20,3 +20,13 @@ CREATE TABLE jobs (
     date_posted TIMESTAMP,
     CHECK (equity < 1)
 );
+
+CREATE TABLE users (
+    username text PRIMARY KEY, 
+    password text NOT NULL, 
+    first_name text NOT NULL, 
+    last_name text NOT NULL,
+    email text NOT NULL UNIQUE,
+    photo_url text,
+    is_admin boolean NOT NULL DEFAULT false
+);

@@ -61,7 +61,7 @@ router.patch("/:handle", async function (req, res, next) {
         }
         
         const { name, num_employees, description, logo_url } = req.body;
-        const handle = req.params.handle;
+        const { handle } = req.params;
         const company = await Company.patch(handle, name, num_employees, description, logo_url);
         return res.json({ company });
     }

@@ -15,15 +15,16 @@ app.use(morgan("tiny"));
 
 const companyRoutes = require("./routes/companies");
 const jobRoutes = require("./routes/jobs");
+const userRoutes = require("./routes/users");
 
 app.use("/companies", companyRoutes)
 app.use("/jobs", jobRoutes)
+app.use("/users", userRoutes)
 
 /** 404 handler */
 
 app.use(function(req, res, next) {
   const err = new ExpressError("Not Found", 404);
-  console.log("HERE1")
   // pass the error to the next piece of middleware
   return next(err);
 });

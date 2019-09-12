@@ -19,7 +19,7 @@ describe("Testing Company Routes", function () {
             logo_url)
             VALUES ('APL', 'Apple', 100, 'Great', 'Apple.com'), 
             ('FB', 'Facebook', 10, 'Sucks', 'Facebook.com')
-            `)
+            `);
 
         await db.query(`
             INSERT INTO jobs (
@@ -30,7 +30,7 @@ describe("Testing Company Routes", function () {
             company_handle,
             date_posted)
             VALUES (1, 'CEO', 100000, 0.40, 'APL', current_timestamp)
-            `)
+            `);
     })
 
     describe("POST /jobs", function () {
@@ -80,7 +80,7 @@ describe("Testing Company Routes", function () {
 
     describe("DELETE /jobs/:id", function () {
         test("Delete a single job", async function () {
-            const response = await request(app).delete("/jobs/1")
+            const response = await request(app).delete("/jobs/1");
             expect(response.body).toEqual({ Message: "Job Deleted" });
         });
     });

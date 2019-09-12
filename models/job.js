@@ -73,9 +73,9 @@ class Job {
       salary,
       equity,
       company_handle
-    }
-    let { query, values } = sqlForPartialUpdate('jobs', items, 'id', id)
-    let company = await db.query(query, values)
+    };
+    let { query, values } = sqlForPartialUpdate('jobs', items, 'id', id);
+    let company = await db.query(query, values);
     return company.rows[0];
   }
 
