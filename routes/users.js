@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken")
 const bcrypt = require("bcrypt")
 const { SECRET_KEY, BCRYPT_WORK_FACTOR } = require("../config")
 const ExpressError = require("../helpers/expressError");
-const { ensureLoggedIn } = require("../middleware/auth")
+const { ensureLoggedIn, ensureCorrectUser } = require("../middleware/auth")
 
 
 router.get("/", async function (req, res, next) {
@@ -56,8 +56,8 @@ router.get("/:username", async function (req, res, next) {
     }
 })
 
-//CREATE ENSURE CORRECT USER MIDDLEWARE 
-router.patch("/:username", ensureLoggedIn, async function (req, res, next) {
+
+router.patch("/:username", ensureLoggedIn, ensureCorrectUser, async function (req, res, next) {
     try {
         const result = jsonschema.validate(req.body, userSchema);
 
@@ -77,8 +77,8 @@ router.patch("/:username", ensureLoggedIn, async function (req, res, next) {
     }
 })
 
-//CREATE ENSURE CORRECT USER MIDDLEWARE 
-router.delete("/:username", ensureLoggedIn, async function (req, res, next) {
+
+router.delete("/:username", ensureLoggedIn, ensureCorrectUser, async function (req, res, next) {
     try {
         const { username } = req.params;
         await User.delete(username);
