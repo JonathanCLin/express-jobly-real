@@ -71,7 +71,7 @@ router.patch("/:username", async function (req, res, next) {
 router.delete("/:username", async function (req, res, next) {
     try {
         const { username } = req.params;
-        await Company.delete(username);
+        await User.delete(username);
         return res.json({ Message: "User Deleted" });
     }
     catch (err) {
