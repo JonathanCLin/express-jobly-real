@@ -56,7 +56,7 @@ class User {
         let user = await db.query(query, values);
         return user.rows[0];
     }
-
+//Return message here 
     static async delete(username) {
         let user = await db.query(
             `DELETE FROM users

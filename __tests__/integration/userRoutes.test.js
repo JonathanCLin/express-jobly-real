@@ -24,7 +24,6 @@ describe("Testing User Routes", function () {
   describe("GET /users", function () {
     test("Get all users", async function () {
       const response = await request(app).get("/users");
-      console.log(response.body)
       const { users } = response.body;
       expect(users).toHaveLength(1);
       expect(users[0].username).toBe("MacGlass");
@@ -45,6 +44,7 @@ describe("Testing User Routes", function () {
         });
       expect(response.statusCode).toBe(201);
       expect(response.body.user.last_name).toBe("Lin");
+      //expect two users with get
     })
   })
 
@@ -54,6 +54,7 @@ describe("Testing User Routes", function () {
       expect(response.body.user.last_name).toBe("Glass");
       expect(response.body.user).toHaveProperty("photo_url");
     })
+    // sad path (bad user)
   })
 
 
@@ -69,10 +70,10 @@ describe("Testing User Routes", function () {
           photo_url: "Mac.com",
           is_admin: true
         });
-      console.log(response.body)
       expect(response.body.user.email).toBe("MacGlass@JeremyLin.com");
       expect(response.body.user).toHaveProperty("email");
     })
+    //404 test as well as additional get to check length
   })
 
   describe("DELETE /users/:username", function () {
@@ -81,6 +82,7 @@ describe("Testing User Routes", function () {
       expect(response.body).toEqual({ Message: "User Deleted" });
     });
   });
+    //404 test as well as additional get to check length
 
   afterAll(async function () {
     await db.end();

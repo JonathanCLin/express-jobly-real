@@ -5,15 +5,19 @@ const ExpressError = require("./helpers/expressError");
 const morgan = require("morgan");
 const app = express();
 const jwt = require("jsonwebtoken")
-const bcrypt = require("bcrpyt")
-const { SECRET_KEY, BCRYPT_WORK_FACTOR } = require("../config")
+const bcrypt = require("bcrypt")
+const { SECRET_KEY, BCRYPT_WORK_FACTOR } = require("./config")
+const db = require("./db");
+const { ensureLoggedIn, ensureAdmin, authenticateJWT } = require("./middleware/auth")
+
+
 
 
 app.use(express.json());
 
 // add logging system
 app.use(morgan("tiny"));
-
+app.use(authenticateJWT)
 
 const companyRoutes = require("./routes/companies");
 const jobRoutes = require("./routes/jobs");
@@ -31,10 +35,11 @@ app.post("/login", async function (req, res, next) {
   WHERE username=$1`,
       [username])
     const user = result.rows[0];
+    const { is_admin } = user
 
     if (user) {
-      if (await bcypt.compare(password, user.password) === true) {
-        const token = jwt.sign({ username }, SECRET_KEY);
+      if (await bcrypt.compare(password, user.password) === true) {
+        const token = jwt.sign({ username, is_admin }, SECRET_KEY);
         return res.json({ token })
       }
     }
@@ -43,6 +48,7 @@ app.post("/login", async function (req, res, next) {
     return next(err)
   }
 })
+//User.login 
 
 /** 404 handler */
 

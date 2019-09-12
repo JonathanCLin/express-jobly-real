@@ -3,12 +3,13 @@ const router = express.Router();
 const Job = require("../models/job");
 const jsonschema = require("jsonschema");
 const jobSchema = require("../schemas/jobSchema.json");
+const { ensureLoggedIn, ensureAdmin, authenticateJWT } = require("../middleware/auth")
 
 const db = require("../db");
 const ExpressError = require("../helpers/expressError");
 
 
-router.get("/", async function (req, res, next) {
+router.get("/", authenticateJWT, async function (req, res, next) {
   try {
     const { search, min_salary, min_equity } = req.query;
     const jobs = await Job.all(min_salary, min_equity, search);
@@ -19,7 +20,7 @@ router.get("/", async function (req, res, next) {
   }
 })
 
-router.post("/", async function (req, res, next) {
+router.post("/", ensureAdmin, async function (req, res, next) {
   try {
     const result = jsonschema.validate(req.body, jobSchema);
 
@@ -39,7 +40,7 @@ router.post("/", async function (req, res, next) {
 })
 
 
-router.get("/:id", async function (req, res, next) {
+router.get("/:id", authenticateJWT, async function (req, res, next) {
   try {
     const { id } = req.params;
     const job = await Job.get(id);
@@ -50,7 +51,7 @@ router.get("/:id", async function (req, res, next) {
   }
 })
 
-router.patch("/:id", async function (req, res, next) {
+router.patch("/:id", ensureAdmin, async function (req, res, next) {
   try {
     const result = jsonschema.validate(req.body, jobSchema);
 
@@ -70,7 +71,7 @@ router.patch("/:id", async function (req, res, next) {
   }
 })
 
-router.delete("/:id", async function (req, res, next) {
+router.delete("/:id", ensureAdmin, async function (req, res, next) {
   try {
     const { id } = req.params;
     await Job.delete(id);
